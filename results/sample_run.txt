@@ -1,0 +1,55 @@
+AI Lab 02 - Intelligent Agents and the PEAS Framework
+Student: Dhia Alhaq Saleh Al-Hindrish | BS Software Engineering
+Python 3.11.6 (standard library only)
+
+----------------------------------------------------------------------
+Part A | Simple reflex agent from the manual (section 2.5)
+----------------------------------------------------------------------
+t=1  temp=29C occupied=True  ->  COOL
+t=2  temp=29C occupied=True  ->  COOL
+t=3  temp=20C occupied=True  ->  IDLE
+t=4  temp=26C occupied=True  ->  IDLE
+t=5  temp=19C occupied=True  ->  WARM
+t=6  temp=29C occupied=False  ->  ECO
+manual expects : COOL COOL IDLE IDLE WARM ECO
+agent produced : COOL COOL IDLE IDLE WARM ECO
+same as manual : True
+Observation: t=1 and t=2 both give COOL. Without memory the agent
+would send the COOL command twice in a row.
+
+----------------------------------------------------------------------
+Part B | Model-based agent with internal state (Task 3)
+----------------------------------------------------------------------
+My scenario for the memory agent:
+t | last mode | percept | mode | send? | check | tested
+1 | - | (24, True) | IDLE | yes | OK | first reading, comfortable room
+2 | IDLE | (24, True) | IDLE | no | OK | same reading again -> no duplicate command
+3 | IDLE | (27, True) | COOL | yes | OK | too hot -> switch to COOL
+4 | COOL | (26, True) | IDLE | yes | OK | exactly 26 C is NOT > 26 -> back to IDLE
+5 | IDLE | (20, True) | IDLE | no | OK | exactly 20 C is NOT < 20 -> stays IDLE
+6 | IDLE | (18, True) | WARM | yes | OK | too cold -> switch to WARM
+7 | WARM | (18, False) | ECO | yes | OK | room empty -> ECO has priority
+8 | ECO | (30, False) | ECO | no | OK | still empty even if hot -> no new command
+9 | ECO | (31, True) | COOL | yes | OK | students return to a hot room
+Checks: 9/9 correct
+
+Reflex vs memory agent on the manual percepts:
+t | percept | reflex mode | memory mode | memory sends?
+1 | (29, True) | COOL | COOL | yes
+2 | (29, True) | COOL | COOL | no
+3 | (20, True) | IDLE | IDLE | yes
+4 | (26, True) | IDLE | IDLE | no
+5 | (19, True) | WARM | WARM | yes
+6 | (29, False) | ECO | ECO | yes
+Commands: reflex = 6, memory = 4 (same modes at every step)
+
+Noisy readings near 20 C - memory agent vs hysteresis agent:
+t | reading | memory mode | sends? | hysteresis mode | sends?
+1 | 19.8 | WARM | yes | WARM | yes
+2 | 20.3 | IDLE | yes | WARM | no
+3 | 19.6 | WARM | yes | WARM | no
+4 | 20.1 | IDLE | yes | WARM | no
+5 | 19.9 | WARM | yes | WARM | no
+6 | 19.7 | WARM | no | WARM | no
+Commands: memory agent = 5/6, hysteresis agent = 1/6
+-> remembering the last mode is not enough near a limit; a dead band fixes the flickering.

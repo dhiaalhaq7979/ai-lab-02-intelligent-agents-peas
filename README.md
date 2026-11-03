@@ -68,7 +68,7 @@ With readings jumping around 20 °C (19.8, 20.3, 19.6, 20.1, 19.9, 19.7), the me
 
 ## Author
 
-**Dhia Alhaq Saleh Al-Hindrish** — BS Software Engineering, Superior University, Lahore
+**Dheya Alhag** — BS Software Engineering, Superior University, Lahore
 GitHub: [@dhiaalhaq7979](https://github.com/dhiaalhaq7979)
 
 Licensed under the [MIT License](LICENSE).

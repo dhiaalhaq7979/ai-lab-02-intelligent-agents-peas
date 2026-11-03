@@ -1,5 +1,5 @@
 AI Lab 02 - Intelligent Agents and the PEAS Framework
-Student: Dhia Alhaq Saleh Al-Hindrish | BS Software Engineering
+Student: Dheya Alhag | BS Software Engineering
 Python 3.11.6 (standard library only)
 
 ----------------------------------------------------------------------
